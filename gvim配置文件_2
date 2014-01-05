@@ -1,0 +1,90 @@
+set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+set guifont=Courier_New:h14:cANSI
+
+winpos 235 50
+set lines=23 columns=80 
+colo desert
+set autoindent 
+"第一行为设置启动位置；
+"第二行为设置窗口大小，行X列；
+"第三行为设置本色方案；
+"第四行为自动与上一行跟从缩进.
+
+"取消备份
+set nobackup 
+
+"打开行号 
+set nu
+"自动高亮 
+syn on
+"设置代码折叠 
+"set fdm=indent 
+"设置代码折叠宽度为4个字符 
+"set fdc=4
+"设置折行 
+"tab宽度 
+set tabstop=4 
+"tab自动缩进宽度 
+set shiftwidth=4 
+"设置自动缩进 
+set ai 
+"将 tab 键转换为空格
+set expandtab
+"关闭高亮
+set nohls
+"-----------something not too important-----------------------"
+
+" 打开状态栏标尺
+set ruler  
+set autoread
+
+set laststatus=2 "开启状态栏信息
+" 状态行显示的内容 [包括系统平台、文件类型、坐标、所占比例、时间等]  
+
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %y%r%m%*%=\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}  
+
+"编译文件
+
+" 编译C++源文件
+func! CompileCpp()
+    exec "w"
+    let compilecmd="!C:\\Dev-Cpp\\Bin\\g++ -Wall -pedantic -std=c++98 "
+    let compileflag="-o %<"
+    exec compilecmd." % ".compileflag
+endfunc
+
+func! CompileCode()
+	exec "w"
+	if &filetype == "cpp"
+		exec "call CompileCpp()"
+	endif
+endfunc
+
+func! RunResult()
+	exec "w"
+	if &filetype == "cpp"
+		exec "! %<"
+	endif
+endfunc
+
+" Ctrl + C 一键保存、编译
+
+map <F9> :call CompileCode()<CR>
+
+imap <F9> <ESC>:call CompileCode()<CR>
+
+vmap <F9> <ESC>:call CompileCode()<CR>
+
+ 
+
+" Ctrl + R 一键保存、运行
+
+map <F10> :call RunResult()<CR>
+
+imap <F10> <ESC>:call RunResult()<CR>
+
+vmap <F10> <ESC>:call RunResult()<CR>
+
